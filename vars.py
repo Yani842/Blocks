@@ -2,7 +2,6 @@ import pygame as pg
 
 Scroll = [0, 0]
 Screen = None
-Clock = None
 Run = True
 Render = None
 Vec = pg.math.Vector2
