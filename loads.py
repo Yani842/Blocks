@@ -19,13 +19,14 @@ def loadObjectsFromJson(path):
             vr.currentPlayer = vr.objects[-1]
             vr.Render.setAnimation(len(vr.objects)-1, vr.animations["playerIdle"])
             
-        elif obj[0] == "wall":
-            vr.objects.append(ob.Wall(vr.getId(), (obj[1], obj[2])))
-            vr.Render.setAnimation(len(vr.objects)-1, vr.animations["wall"])
+        elif obj[0] == "ground":
+            vr.objects.append(ob.Ground(vr.getId(), (obj[1], obj[2])))
+            vr.Render.setAnimation(len(vr.objects)-1, vr.animations["ground"])
 
 
 if __name__ == "__main__":
     import main as m
-    m.init()
-    m.gameMainLoop()
+    main = m.Main()
+    main.init()
+    main.run()
     pg.quit()

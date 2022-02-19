@@ -12,8 +12,7 @@ groups = {
     "player": pg.sprite.Group(),
     "friction": pg.sprite.Group(),
     "player collide": pg.sprite.Group(),
-    "walls": pg.sprite.Group(),
-    "frozen walls": pg.sprite.Group()
+    "ground": pg.sprite.Group()
 }
 currentPlayer = None
 
@@ -33,6 +32,7 @@ def deleteObject(id):
 
 if __name__ == "__main__":
     import main as m
-    m.init()
-    m.gameMainLoop()
+    main = m.Main()
+    main.init()
+    main.run()
     pg.quit()

@@ -23,7 +23,7 @@ class render:
                     ["player/"+str(i)+".png" for i in range(1, 16)]),
                 0.04,
                 False),
-            "wall": animation(
+            "ground": animation(
                 ld.importImages(
                     ["ground/grass-1.png"], 48, 38),
                 0,
@@ -70,6 +70,7 @@ class render:
 
 if __name__ == "__main__":
     import main as m
-    m.init()
-    m.gameMainLoop()
+    main = m.Main()
+    main.init()
+    main.run()
     pg.quit()

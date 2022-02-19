@@ -27,6 +27,8 @@ class Main:
             pl.mv.addAcc(vr.Vec(0,-1)) #up
         if keys[pg.K_s]:
             pl.mv.addAcc(vr.Vec(0,1)) #down
+        if keys[pg.K_SPACE]:
+            pl.mv.jump()
 
     def update(s):
         for obj in vr.objects:

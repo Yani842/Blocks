@@ -1,73 +1,74 @@
 import pygame as pg
 import vars as vr
 
-
+# limit jump
+# move only on surface
 class movement():
     def __init__(s, obj):
-        s.acc = vr.Vec(0, 0)
-        s.vel = vr.Vec(0, 0)
-        s.SPEED = 55
-        s.obj = obj
+        s.__acc = vr.Vec(0, 0)
+        s.__vel = vr.Vec(0, 0)
+        s.__speed = 55
+        s.__obj = obj
 
-    def getFric(s):
-        s.obj.rect = s.obj.rect.inflate(2, 2)
-        hits = pg.sprite.spritecollide(s.obj, vr.groups["friction"], False)
-        s.obj.rect = s.obj.rect.inflate(-2, -2)
+    def __getFric(s):
+        s.__obj.rect = s.__obj.rect.inflate(2, 2)
+        hits = pg.sprite.spritecollide(s.__obj, vr.groups["friction"], False)
+        s.__obj.rect = s.__obj.rect.inflate(-2, -2)
 
         friction = 0
         for h in hits:
-            if vr.groups["frozen walls"] in h.groups:
-                friction -= 0.003
-            if vr.groups["sandy walls"] in h.groups:
-                friction -= 0.12
+            if vr.groups["ground"] in h.groups:
+                friction -= 7
         if not friction:
             friction -= 5
         return friction
 
     def setSpeed(s, speed):
-        s.SPEED = speed
+        s.__speed = speed
 
     def addAcc(s, vec):
-        s.acc += s.SPEED * vec
+        s.__acc += s.__speed * vec
 
-    def collideX(s):
-        if hits := pg.sprite.spritecollide(s.obj, vr.groups["player collide"], False):
-            if s.vel.x > 0:  # left
-                s.obj.pos.x = hits[0].rect.left - s.obj.rect.width
-                s.vel.x = 0
-            if s.vel.x < 0:
-                s.obj.pos.x = hits[0].rect.right
-                s.vel.x = 0
-            s.obj.rect.x = s.obj.pos.x
+    def jump(s):
+        s.__vel.y -= 190
+   
+    def __collideX(s):
+        if hits := pg.sprite.spritecollide(s.__obj, vr.groups["player collide"], False):
+            if s.__vel.x > 0:  # left
+                s.__obj.pos.x = hits[0].rect.left - s.__obj.rect.width
+                s.__vel.x = 0
+            if s.__vel.x < 0:
+                s.__obj.pos.x = hits[0].rect.right
+                s.__vel.x = 0
+            s.__obj.rect.x = s.__obj.pos.x
 
-    def collideY(s):
-        if hits := pg.sprite.spritecollide(s.obj, vr.groups["player collide"], False):
-            if s.vel.y > 0:
-                s.obj.pos.y = hits[0].rect.top - s.obj.rect.height
-                s.vel.y = 0
-            if s.vel.y < 0:
-                s.obj.pos.y = hits[0].rect.bottom
-                s.vel.y = 0
-            s.obj.rect.y = s.obj.pos.y
+    def __collideY(s):
+        if hits := pg.sprite.spritecollide(s.__obj, vr.groups["player collide"], False):
+            if s.__vel.y > 0:
+                s.__obj.pos.y = hits[0].rect.top - s.__obj.rect.height
+                s.__vel.y = 0
+            if s.__vel.y < 0:
+                s.__obj.pos.y = hits[0].rect.bottom
+                s.__vel.y = 0
+            s.__obj.rect.y = s.__obj.pos.y
 
     def update(s, dt):
-        s.acc.x += s.vel.x * s.getFric() * dt
-        s.acc.y += s.vel.y * s.getFric() * dt
-        s.vel += s.acc
-        print(dt)
-        s.obj.pos[0] += (s.vel.x + 0.5 * s.acc.x)*dt
-        s.obj.pos.y += (s.vel.y + 0.5 * s.acc.y)*dt
+        s.__acc.x += s.__vel.x * s.__getFric() * dt
+        s.__acc.y += s.__vel.y * s.__getFric() * dt
+        s.__vel += s.__acc
+        s.__obj.pos.x += (s.__vel.x + 0.5 * s.__acc.x)*dt
+        s.__obj.pos.y += (s.__vel.y + 0.5 * s.__acc.y)*dt
 
-        s.obj.rect.x = s.obj.pos.x
-        s.collideX()
-        s.obj.rect.y = s.obj.pos.y
-        s.collideY()
+        s.__obj.rect.x = s.__obj.pos.x
+        s.__collideX()
+        s.__obj.rect.y = s.__obj.pos.y
+        s.__collideY()
 
-        s.acc = vr.Vec(0, 0)
-
+        s.__acc = vr.Vec(0, 55)
 
 if __name__ == "__main__":
     import main as m
-    m.init()
-    m.gameMainLoop()
+    main = m.Main()
+    main.init()
+    main.run()
     pg.quit()
