@@ -6,13 +6,16 @@ import loads as ld
 class Main:
     def init(s):
         pg.init()
-        s.screen = pg.display.set_mode((800, 600), pg.HWSURFACE | pg.DOUBLEBUF)
+        s.width = 1024
+        s.height = 768
+        s.screen = pg.display.set_mode((s.width, s.height), pg.HWSURFACE | pg.DOUBLEBUF)
         s.Clock = pg.time.Clock()
         s.running = True
         s.dt = 0;
-        rd.render.init()
+        rd.render.init(s.width, s.height)
         ld.loadObjectsFromJson("levels/level1.json")
-        
+        rd.render.setFocusedObject(da.currentPlayer)
+
     def inputs(s):
         for event in pg.event.get():
             if event.type == pg.QUIT:

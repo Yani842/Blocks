@@ -22,8 +22,14 @@ class Render:
     def __init__(s):
         # [pointInRate, currentFrame, animation, doOWAEnded, id]
         s.objectStates = []
+        s.__scroll: da.Vec = da.Vec(0, 0)
+        s.__focuseObjct = None
+        s.__winW = 0
+        s.__winH = 0
 
-    def init(s):
+    def init(s, w, h):
+        s.__winW = w
+        s.__winH = h
         da.animations = {
             "playerIdle": Animation(
                 importImages(
@@ -37,7 +43,14 @@ class Render:
                 False)
         }
 
+    def setFocusedObject(s, obj):
+        s.__focuseObjct = obj
+    
     def update(s, dt):
+        if s.__focuseObjct:
+            s.__scroll.x += int((s.__focuseObjct.rect.x-s.__scroll.x-s.__winW/2+s.__focuseObjct.rect.width/2)/6)
+            s.__scroll.y += int((s.__focuseObjct.rect.y-s.__scroll.y-s.__winH/2+s.__focuseObjct.rect.height/2)/6)
+            
         for obj in s.objectStates:
             if obj[2].noAnimation:
                 continue
@@ -56,7 +69,7 @@ class Render:
         for obj in s.objectStates:
             if obj[1] >= 0:
                 # pos[0]-da.Scroll[0], pos[1]-da.Scroll[1]
-                screen.blit(obj[2].images[obj[1]], da.objects[obj[4]].rect)
+                screen.blit(obj[2].images[obj[1]], (da.objects[obj[4]].rect.x-s.__scroll.x, da.objects[obj[4]].rect.y-s.__scroll.y))
         pg.display.flip()
 
     def setAnimation(s, id, animation):
