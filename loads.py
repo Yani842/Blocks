@@ -1,27 +1,21 @@
 import pygame as pg
 import os.path as op
 import json
-import vars as vr
+import data as da
 import objects as ob
-
-def importImages(imagePath, sizeX = 32, sizeY = 32):
-    images = []
-    for path in imagePath:
-        image = pg.image.load(op.join("data/images/", path)).convert_alpha()
-        images.append(pg.transform.scale(image, (sizeX, sizeY)))
-    return images
+import render as rd
 
 def loadObjectsFromJson(path):
     level = json.load(open(op.join("data/json/", path)))
     for obj in level:
         if obj[0] == "player":
-            vr.objects.append(ob.Player(vr.getId(), vr.Vec(obj[1], obj[2])))
-            vr.currentPlayer = vr.objects[-1]
-            vr.Render.setAnimation(len(vr.objects)-1, vr.animations["playerIdle"])
+            da.objects.append(ob.Player(da.getId(), da.Vec(obj[1], obj[2])))
+            da.currentPlayer = da.objects[-1]
+            rd.render.setAnimation(len(da.objects)-1, da.animations["playerIdle"])
             
         elif obj[0] == "ground":
-            vr.objects.append(ob.Ground(vr.getId(), (obj[1], obj[2])))
-            vr.Render.setAnimation(len(vr.objects)-1, vr.animations["ground"])
+            da.objects.append(ob.Ground(da.getId(), (obj[1], obj[2])))
+            rd.render.setAnimation(len(da.objects)-1, da.animations["ground"])
 
 
 if __name__ == "__main__":

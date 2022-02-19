@@ -1,13 +1,7 @@
 import pygame as pg
 
-Scroll = [0, 0]
-Screen = None
-Run = True
-Render = None
 Vec = pg.math.Vector2
-
 animations = {}
-
 groups = {
     "player": pg.sprite.Group(),
     "friction": pg.sprite.Group(),
