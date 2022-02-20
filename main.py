@@ -1,7 +1,9 @@
 import pygame as pg
+from data import *
 import data as da
 import render as rd
 import loads as ld
+import raycasting as rc
 
 class Main:
     def init(s):
@@ -15,6 +17,7 @@ class Main:
         rd.render.init(s.width, s.height)
         ld.loadObjectsFromJson("levels/level1.json")
         rd.render.setFocusedObject(da.currentPlayer)
+        s.line = rc.RayCasting()
 
     def inputs(s):
         for event in pg.event.get():
@@ -24,18 +27,18 @@ class Main:
         pl = da.currentPlayer
         keys = pg.key.get_pressed()
         if keys[pg.K_a]:
-            pl.mv.addAcc(da.Vec(-1,0)) #left
+            pl.mv.addAcc(vec(-1,0)) #left
         if keys[pg.K_d]:
-            pl.mv.addAcc(da.Vec(1,0)) #right
+            pl.mv.addAcc(vec(1,0)) #right
         if keys[pg.K_w]:
-            pl.mv.addAcc(da.Vec(0,-1)) #up
+            pl.mv.addAcc(vec(0,-1)) #up
         if keys[pg.K_s]:
-            pl.mv.addAcc(da.Vec(0,1)) #down
+            pl.mv.addAcc(vec(0,1)) #down
         if keys[pg.K_SPACE]:
             pl.mv.jump()
 
     def update(s):
-        for obj in da.objects:
+        for obj in groups["update"]:
             obj.update(s.dt)
         rd.render.update(s.dt)
 
@@ -44,6 +47,8 @@ class Main:
             s.inputs()
             s.update()
             rd.render.render(s.screen)
+            s.line.render(s.screen, s.width)
+            pg.display.flip()
             s.dt = s.Clock.tick(60) / 1000
             pg.display.set_caption(f"{s.Clock.get_fps():.2f}")
 

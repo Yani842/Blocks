@@ -1,10 +1,10 @@
 import pygame as pg
-import data as da
+from data import *
 
 class Movement():
     def __init__(s, obj):
-        s.__acc = da.Vec(0, 0)
-        s.__vel = da.Vec(0, 0)
+        s.__acc = vec(0, 0)
+        s.__vel = vec(0, 0)
         s.__speed = 55
         s.__obj = obj
         s.__onSurface = False
@@ -12,12 +12,12 @@ class Movement():
         
     def __getFric(s):
         s.__obj.rect = s.__obj.rect.inflate(2, 2)
-        hits = pg.sprite.spritecollide(s.__obj, da.groups["friction"], False)
+        hits = pg.sprite.spritecollide(s.__obj, groups["friction"], False)
         s.__obj.rect = s.__obj.rect.inflate(-2, -2)
 
         friction = 0
         for h in hits:
-            if da.groups["ground"] in h.groups:
+            if groups["ground"] in h.groups:
                 friction -= 7
         if not friction:
             friction -= 5
@@ -26,7 +26,7 @@ class Movement():
     def setSpeed(s, speed):
         s.__speed = speed
 
-    def addAcc(s, vec: da.Vec):
+    def addAcc(s, vec: vec):
         if s.__onSurface:
             s.__acc += s.__speed * vec
 
@@ -35,7 +35,7 @@ class Movement():
             s.__jumpCounter = 10
    
     def __collideX(s):
-        if hits := pg.sprite.spritecollide(s.__obj, da.groups["player collide"], False):
+        if hits := pg.sprite.spritecollide(s.__obj, groups["player collide"], False):
             if s.__vel.x > 0: # left
                 s.__obj.pos.x = hits[0].rect.left - s.__obj.rect.width
                 s.__vel.x = 0
@@ -46,7 +46,7 @@ class Movement():
 
     def __collideY(s):
         s.__onSurface = False
-        if hits := pg.sprite.spritecollide(s.__obj, da.groups["player collide"], False):
+        if hits := pg.sprite.spritecollide(s.__obj, groups["player collide"], False):
             if s.__vel.y > 0: # bottom
                 s.__obj.pos.y = hits[0].rect.top - s.__obj.rect.height
                 s.__vel.y = 0
@@ -72,11 +72,4 @@ class Movement():
         s.__obj.rect.y = s.__obj.pos.y
         s.__collideY()
 
-        s.__acc = da.Vec(0, 55)
-
-if __name__ == "__main__":
-    import main as m
-    main = m.Main()
-    main.init()
-    main.run()
-    pg.quit()
+        s.__acc = vec(0, 55)

@@ -1,11 +1,16 @@
 import pygame as pg
 
-Vec = pg.math.Vector2
+vec = pg.math.Vector2
+
 animations = {}
+
 groups = {
+    "all": pg.sprite.Group(),
+    "update": pg.sprite.Group(),
     "player": pg.sprite.Group(),
     "friction": pg.sprite.Group(),
     "player collide": pg.sprite.Group(),
+    "light collide": pg.sprite.Group(),
     "ground": pg.sprite.Group()
 }
 currentPlayer = None
@@ -15,18 +20,11 @@ freeIds = []
 
 def getId():
     if not freeIds:
-        return len(objects)
+        objects.append(1)
+        return len(objects) - 1
     else:
         return freeIds[-1]
 
 def deleteObject(id):
     objects[id] = None
     freeIds.append(id)
-
-
-if __name__ == "__main__":
-    import main as m
-    main = m.Main()
-    main.init()
-    main.run()
-    pg.quit()

@@ -1,6 +1,6 @@
 import pygame as pg
 import os.path as op
-import data as da
+from data import *
 
 def importImages(imagePath, sizeX = 32, sizeY = 32):
     images = []
@@ -22,7 +22,7 @@ class Render:
     def __init__(s):
         # [pointInRate, currentFrame, animation, doOWAEnded, id]
         s.objectStates = []
-        s.__scroll: da.Vec = da.Vec(0, 0)
+        s.scroll: vec = vec(0, 0)
         s.__focuseObjct = None
         s.__winW = 0
         s.__winH = 0
@@ -30,26 +30,16 @@ class Render:
     def init(s, w, h):
         s.__winW = w
         s.__winH = h
-        da.animations = {
-            "playerIdle": Animation(
-                importImages(
-                    ["player/"+str(i)+".png" for i in range(1, 16)]),
-                0.04,
-                False),
-            "ground": Animation(
-                importImages(
-                    ["ground/grass-1.png"], 48, 38),
-                0,
-                False)
-        }
+        animations["playerIdle"] = Animation(importImages(["player/"+str(i)+".png" for i in range(1, 16)]), 0.04, False)
+        animations["ground"] = Animation(importImages(["ground/grass-1.png"], 48, 38), 0, False)
 
     def setFocusedObject(s, obj):
         s.__focuseObjct = obj
     
     def update(s, dt):
         if s.__focuseObjct:
-            s.__scroll.x += int((s.__focuseObjct.rect.x-s.__scroll.x-s.__winW/2+s.__focuseObjct.rect.width/2)/6)
-            s.__scroll.y += int((s.__focuseObjct.rect.y-s.__scroll.y-s.__winH/2+s.__focuseObjct.rect.height/2)/6)
+            s.scroll.x += int((s.__focuseObjct.rect.x-s.scroll.x-s.__winW/2+s.__focuseObjct.rect.width/2)/6)
+            s.scroll.y += int((s.__focuseObjct.rect.y-s.scroll.y-s.__winH/2+s.__focuseObjct.rect.height/2)/6)
             
         for obj in s.objectStates:
             if obj[2].noAnimation:
@@ -68,30 +58,22 @@ class Render:
         screen.fill((0, 0, 0))
         for obj in s.objectStates:
             if obj[1] >= 0:
-                # pos[0]-da.Scroll[0], pos[1]-da.Scroll[1]
-                screen.blit(obj[2].images[obj[1]], (da.objects[obj[4]].rect.x-s.__scroll.x, da.objects[obj[4]].rect.y-s.__scroll.y))
-        pg.display.flip()
+                screen.blit(obj[2].images[obj[1]], (groups["all"].sprites()[obj[4]].rect.x-s.scroll.x, groups["all"].sprites()[obj[4]].rect.y-s.scroll.y))
+        # pg.display.flip()
 
     def setAnimation(s, id, animation):
         if len(s.objectStates) <= id:
-            da.objects[id].rect = animation.images[0].get_rect()
-            da.objects[id].rect.x, da.objects[id].rect.y = da.objects[id].pos
+            groups["all"].sprites()[id].rect = animation.images[0].get_rect()
+            groups["all"].sprites()[id].rect.x, groups["all"].sprites()[id].rect.y = groups["all"].sprites()[id].pos
             s.objectStates.append([0, 0, animation, False, id])
         else:
-            da.objects[id].rect = animation.images[0].get_rect()
-            da.objects[id].rect.x, da.objects[id].rect.y = da.objects[id].pos
+            groups["all"].sprites()[id].rect = animation.images[0].get_rect()
+            groups["all"].sprites()[id].rect.x, groups["all"].sprites()[id].rect.y = groups["all"].sprites()[id].pos
             s.objectStates[id] = [0, 0, animation, False, id]
 
     def setAnimationSameFrame(s, id, animation):
-        da.objects[id].rect = animation[0].get_rect()
-        da.objects[id].rect.x, da.objects[id].rect.y = da.objects[id].pos
+        groups["all"].sprites()[id].rect = animation[0].get_rect()
+        groups["all"].sprites()[id].rect.x, groups["all"].sprites()[id].rect.y = groups["all"].sprites()[id].pos
         s.objectStates[id][2] = animation
 
 render = Render()
-
-if __name__ == "__main__":
-    import main as m
-    main = m.Main()
-    main.init()
-    main.run()
-    pg.quit()

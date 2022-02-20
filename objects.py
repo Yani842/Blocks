@@ -1,13 +1,13 @@
 import pygame as pg
-import data as da
+from data import *
 import physics as ph
 
 
 class Player(pg.sprite.DirtySprite):
-    def __init__(s, id: int, pos: da.Vec):
-        pg.sprite.DirtySprite.__init__(s, [da.groups["player"]])
+    def __init__(s, id: int, pos: vec):
+        pg.sprite.DirtySprite.__init__(s, [groups["player"], groups["all"], groups["update"]])
         s.id = id
-        s.pos: da.Vec = pos
+        s.pos: vec = pos
         s.mv = ph.Movement(s)
 
     def update(s, dt):
@@ -15,16 +15,8 @@ class Player(pg.sprite.DirtySprite):
 
 
 class Ground(pg.sprite.DirtySprite):
-    def __init__(s, id: int, pos: da.Vec):
+    def __init__(s, id: int, pos: vec):
         pg.sprite.DirtySprite.__init__(
-            s, [da.groups["ground"], da.groups["player collide"]])
+            s, [groups["ground"], groups["player collide"], groups["light collide"], groups["all"]])
         s.id = id
-        s.pos: da.Vec = pos
-
-
-if __name__ == "__main__":
-    import main as m
-    main = m.Main()
-    main.init()
-    main.run()
-    pg.quit()
+        s.pos: vec = pos
