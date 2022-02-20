@@ -31,7 +31,7 @@ class Render:
         s.__winW = w
         s.__winH = h
         animations["playerIdle"] = Animation(importImages(["player/"+str(i)+".png" for i in range(1, 16)]), 0.04, False)
-        animations["ground"] = Animation(importImages(["ground/grass-1.png"], 48, 38), 0, False)
+        animations["ground"] = Animation(importImages(["ground/grass-1.png"], 48, 48), 0, False)
 
     def setFocusedObject(s, obj):
         s.__focuseObjct = obj
