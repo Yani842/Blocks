@@ -20,19 +20,18 @@ class Movement():
             if groups["ground"] in h.groups:
                 friction -= 7
         if not friction:
-            friction -= 5
+            friction -= 8
         return friction
 
     def setSpeed(s, speed):
         s.__speed = speed
 
     def addAcc(s, vec: vec):
-        if s.__onSurface:
-            s.__acc += s.__speed * vec
+        s.__acc += s.__speed * vec
 
     def jump(s):
         if s.__onSurface:
-            s.__jumpCounter = 10
+            s.__jumpCounter = 0.2
    
     def __collideX(s):
         if hits := pg.sprite.spritecollide(s.__obj, groups["player collide"], False):
@@ -58,8 +57,8 @@ class Movement():
 
     def update(s, dt):
         if s.__jumpCounter > 0:
-            s.__jumpCounter -= 1
-            s.__vel.y -= 150
+            s.__jumpCounter -= dt
+            s.__vel.y -= 80
             
         s.__acc.x += s.__vel.x * s.__getFric() * dt
         s.__acc.y += s.__vel.y * s.__getFric() * dt

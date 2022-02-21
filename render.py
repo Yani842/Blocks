@@ -55,11 +55,9 @@ class Render:
                         obj[1] = 0
 
     def render(s, screen):
-        screen.fill((0, 0, 0))
         for obj in s.objectStates:
             if obj[1] >= 0:
                 screen.blit(obj[2].images[obj[1]], (groups["all"].sprites()[obj[4]].rect.x-s.scroll.x, groups["all"].sprites()[obj[4]].rect.y-s.scroll.y))
-        # pg.display.flip()
 
     def setAnimation(s, id, animation):
         if len(s.objectStates) <= id:

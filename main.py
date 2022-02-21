@@ -3,7 +3,6 @@ from data import *
 import data as da
 import render as rd
 import loads as ld
-import raycasting as rc
 
 class Main:
     def init(s):
@@ -17,12 +16,14 @@ class Main:
         rd.render.init(s.width, s.height)
         ld.loadObjectsFromJson("levels/level1.json")
         rd.render.setFocusedObject(da.currentPlayer)
-        s.line = rc.RayCasting()
 
     def inputs(s):
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 s.running = False
+            elif event.type == pg.KEYDOWN:
+                if event.key == pg.K_ESCAPE:
+                    s.running == False
 
         pl = da.currentPlayer
         keys = pg.key.get_pressed()
@@ -46,10 +47,12 @@ class Main:
         while s.running:
             s.inputs()
             s.update()
+            
+            s.screen.fill((0, 0, 0))
             rd.render.render(s.screen)
-            s.line.render(s.screen, s.width)
             pg.display.flip()
-            s.dt = s.Clock.tick(60) / 1000
+            
+            s.dt = s.Clock.tick() / 1000
             pg.display.set_caption(f"{s.Clock.get_fps():.2f}")
 
 if __name__ == '__main__':
