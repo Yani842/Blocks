@@ -17,10 +17,10 @@ class Movement():
 
         friction = 0
         for h in hits:
-            if groups["ground"] in h.groups:
-                friction -= 7
+            if groups["ground"] in h.groups():
+                friction -= 5
         if not friction:
-            friction -= 8
+            friction -= 4
         return friction
 
     def setSpeed(s, speed):
@@ -58,13 +58,13 @@ class Movement():
     def update(s, dt):
         if s.__jumpCounter > 0:
             s.__jumpCounter -= dt
-            s.__vel.y -= 80
-            
+            s.__vel.y -= 150
+
         s.__acc.x += s.__vel.x * s.__getFric() * dt
         s.__acc.y += s.__vel.y * s.__getFric() * dt
         s.__vel += s.__acc
-        s.__obj.pos.x += (s.__vel.x + 0.5 * s.__acc.x)*dt
-        s.__obj.pos.y += (s.__vel.y + 0.5 * s.__acc.y)*dt
+        s.__obj.pos.x += (s.__vel.x + 0.5 * s.__acc.x) * dt
+        s.__obj.pos.y += (s.__vel.y + 0.5 * s.__acc.y) * dt
 
         s.__obj.rect.x = s.__obj.pos.x
         s.__collideX()

@@ -2,7 +2,7 @@ import pygame as pg
 import os.path as op
 from data import *
 
-def importImages(imagePath, sizeX = 32, sizeY = 32):
+def importImages(imagePath: list[str], sizeX: int = 32, sizeY: int = 32):
     images = []
     for path in imagePath:
         image = pg.image.load(op.join("data/images/", path)).convert_alpha()
@@ -10,12 +10,15 @@ def importImages(imagePath, sizeX = 32, sizeY = 32):
     return images
 
 class Animation:
-    def __init__(s, images, rate, oneCycle):
-        s.images = images
-        s.length = len(images)-1
-        s.rate = rate
-        s.oneCycle = oneCycle
-        s.noAnimation = False
+    def __init__(s, images: list[pg.Surface], rate: float, oneCycle: bool):
+        s.images: list(pg.Surface) = images
+        s.length: int = len(images)-1
+        s.rate: float = rate
+        s.oneCycle: bool = oneCycle
+        if rate == 0:
+            s.noAnimation: bool = True
+        else:
+            s.noAnimation: bool = False
 
 
 class Render:
@@ -30,7 +33,8 @@ class Render:
     def init(s, w, h):
         s.__winW = w
         s.__winH = h
-        animations["playerIdle"] = Animation(importImages(["player/"+str(i)+".png" for i in range(1, 16)]), 0.04, False)
+        # ["player/"+str(i)+".png" for i in range(1, 16)]
+        animations["playerIdle"] = Animation(importImages(["ghost/idle-1.png"]), 0, False)
         animations["ground"] = Animation(importImages(["ground/grass-1.png"], 48, 48), 0, False)
 
     def setFocusedObject(s, obj):

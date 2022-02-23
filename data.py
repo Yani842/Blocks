@@ -10,14 +10,9 @@ groups = {
     "player": pg.sprite.Group(),
     "friction": pg.sprite.Group(),
     "player collide": pg.sprite.Group(),
-    "light collide": pg.sprite.Group(),
     "ground": pg.sprite.Group()
 }
 currentPlayer = None
-vertices = [(300-1, 300), (300-1, 348),
-            (632, 300), (632, 348),
-            (444, 348), (492, 348),
-            (444, 492), (492, 492)]
 
 objects = []
 freeIds = []

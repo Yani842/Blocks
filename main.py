@@ -52,7 +52,7 @@ class Main:
             rd.render.render(s.screen)
             pg.display.flip()
             
-            s.dt = s.Clock.tick() / 1000
+            s.dt = s.Clock.tick(60) / 1000
             pg.display.set_caption(f"{s.Clock.get_fps():.2f}")
 
 if __name__ == '__main__':
