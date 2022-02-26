@@ -1,7 +1,7 @@
 import pygame as pg
 from data import *
 import physics as ph
-
+import render as rd
 
 class Player(pg.sprite.DirtySprite):
     def __init__(s, id: int, pos: vec):

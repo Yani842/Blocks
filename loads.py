@@ -12,7 +12,7 @@ def loadObjectsFromJson(path):
         if obj[0] == "player":
             pl = ob.Player(getId(), vec(obj[1], obj[2]))
             da.currentPlayer = pl
-            rd.render.setAnimation(len(objects)-1, animations["playerIdle"])
+            rd.render.setAnimation(len(objects)-1, animations["ghost idle"])
             
         elif obj[0] == "ground":
             ob.NoLogic(getId(), (obj[1], obj[2]), [groups["ground"], groups["all"], groups["player collide"], groups["friction"]])

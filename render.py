@@ -2,11 +2,11 @@ import pygame as pg
 import os.path as op
 from data import *
 
-def importImages(imagePath: list[str], sizeX: int = 32, sizeY: int = 32):
+def importImages(imagePath: list[str], width: int = 32, height: int = 32):
     images = []
     for path in imagePath:
         image = pg.image.load(op.join("data/images/", path)).convert_alpha()
-        images.append(pg.transform.scale(image, (sizeX, sizeY)))
+        images.append(pg.transform.scale(image, (width, height)))
     return images
 
 class Animation:
@@ -34,7 +34,9 @@ class Render:
         s.__winW = w
         s.__winH = h
         # ["player/"+str(i)+".png" for i in range(1, 16)]
-        animations["playerIdle"] = Animation(importImages(["ghost/idle-1.png"]), 0, False)
+        animations["ghost idle"] = Animation(importImages(["ghost/idle-1.png"], 40, 54), 0, False)
+        animations["ghost left"] = Animation(importImages(["ghost/left-1.png"], 40, 54), 0, False)
+        animations["ghost right"] = Animation(importImages(["ghost/right-1.png"], 40, 54), 0, False)
         animations["ground"] = Animation(importImages(["ground/grass-1.png"], 48, 48), 0, False)
 
     def setFocusedObject(s, obj):
@@ -42,8 +44,8 @@ class Render:
     
     def update(s, dt):
         if s.__focuseObjct:
-            s.scroll.x += int((s.__focuseObjct.rect.x-s.scroll.x-s.__winW/2+s.__focuseObjct.rect.width/2)/6)
-            s.scroll.y += int((s.__focuseObjct.rect.y-s.scroll.y-s.__winH/2+s.__focuseObjct.rect.height/2)/6)
+            s.scroll.x += (s.__focuseObjct.rect.x-s.scroll.x-s.__winW/2+s.__focuseObjct.rect.width/2)/9
+            s.scroll.y += (s.__focuseObjct.rect.y-s.scroll.y-s.__winH/2+s.__focuseObjct.rect.height/2)/9
             
         for obj in s.objectStates:
             if obj[2].noAnimation:

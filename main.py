@@ -12,7 +12,7 @@ class Main:
         s.screen = pg.display.set_mode((s.width, s.height), pg.HWSURFACE | pg.DOUBLEBUF)
         s.Clock = pg.time.Clock()
         s.running = True
-        s.dt = 0;
+        s.dt = 0
         rd.render.init(s.width, s.height)
         ld.loadObjectsFromJson("levels/level1.json")
         rd.render.setFocusedObject(da.currentPlayer)
@@ -21,20 +21,17 @@ class Main:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 s.running = False
-            elif event.type == pg.KEYDOWN:
-                if event.key == pg.K_ESCAPE:
-                    s.running == False
 
         pl = da.currentPlayer
         keys = pg.key.get_pressed()
+        if keys[pg.K_ESCAPE]:
+            s.running = False
         if keys[pg.K_a]:
             pl.mv.addAcc(vec(-1,0)) #left
+            rd.render.setAnimation(pl.id, animations["ghost left"])
         if keys[pg.K_d]:
             pl.mv.addAcc(vec(1,0)) #right
-        if keys[pg.K_w]:
-            pl.mv.addAcc(vec(0,-1)) #up
-        if keys[pg.K_s]:
-            pl.mv.addAcc(vec(0,1)) #down
+            rd.render.setAnimation(pl.id, animations["ghost right"])
         if keys[pg.K_SPACE]:
             pl.mv.jump()
 
