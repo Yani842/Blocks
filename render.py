@@ -2,10 +2,12 @@ import pygame as pg
 import os.path as op
 from data import *
 
-def importImages(imagePath: list[str], width: int = 32, height: int = 32):
+def importImages(imagePath: list[str], width: int = 48, height: int = 48, colorkey: bool = False):
     images = []
     for path in imagePath:
         image = pg.image.load(op.join("data/images/", path)).convert_alpha()
+        if colorkey:
+            image.set_colorkey((255, 255, 255))
         images.append(pg.transform.scale(image, (width, height)))
     return images
 
@@ -37,7 +39,15 @@ class Render:
         animations["ghost idle"] = Animation(importImages(["ghost/idle-1.png"], 40, 54), 0, False)
         animations["ghost left"] = Animation(importImages(["ghost/left-1.png"], 40, 54), 0, False)
         animations["ghost right"] = Animation(importImages(["ghost/right-1.png"], 40, 54), 0, False)
-        animations["ground"] = Animation(importImages(["ground/grass-1.png"], 48, 48), 0, False)
+        animations["jelly left"] = Animation(importImages(["jelly/left/"+str(i)+".png" for i in range(1, 16)], 40, 54, True), 0.02, False)
+        animations["jelly right"] = Animation(importImages(["jelly/right/"+str(i)+".png" for i in range(1, 16)], 40, 54, True), 0.02, False)
+        animations["ground-1"] = Animation(importImages(["ground/grass-1.png"]), 0, False)
+        animations["ground-2"] = Animation(importImages(["ground/grass-2.png"]), 0, False)
+        animations["ground-3"] = Animation(importImages(["ground/grass-3.png"]), 0, False)
+        animations["ground-4"] = Animation(importImages(["ground/grass-4.png"]), 0, False)
+        animations["ground-5"] = Animation(importImages(["ground/grass-5.png"]), 0, False)
+        animations["ground-6"] = Animation(importImages(["ground/grass+water.png"]), 0, False)
+        print(pg._sdl2.touch.get_device())
 
     def setFocusedObject(s, obj):
         s.__focuseObjct = obj
@@ -76,7 +86,7 @@ class Render:
             s.objectStates[id] = [0, 0, animation, False, id]
 
     def setAnimationSameFrame(s, id, animation):
-        groups["all"].sprites()[id].rect = animation[0].get_rect()
+        groups["all"].sprites()[id].rect = animation.images[0].get_rect()
         groups["all"].sprites()[id].rect.x, groups["all"].sprites()[id].rect.y = groups["all"].sprites()[id].pos
         s.objectStates[id][2] = animation
 

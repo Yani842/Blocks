@@ -61,7 +61,7 @@ class Movement():
             s.__vel.y -= s.__JUMPVEL
         
         if not int(s.__acc.x):
-            rd.render.setAnimation(s.__obj.id, animations["ghost idle"])
+            rd.render.setAnimationSameFrame(s.__obj.id, animations["jelly right"])
         
         s.__acc.x += s.__vel.x * s.__getFric() * dt
         s.__acc.y += s.__vel.y * s.__getFric() * dt

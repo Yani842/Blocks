@@ -5,15 +5,25 @@ from data import *
 import data as da
 import objects as ob
 import render as rd
+import random as ra
 
 def loadObjectsFromJson(path):
     level = json.load(open(op.join("data/json/", path)))
     for obj in level:
         if obj[0] == "player":
-            pl = ob.Player(getId(), vec(obj[1], obj[2]))
+            if obj[1][0]:
+                pl = ob.Player(getId(), vec(obj[1][1]*48, obj[1][2]*48))
+            else:
+                pl = ob.Player(getId(), vec(obj[1][1], obj[1][2]))
             da.currentPlayer = pl
-            rd.render.setAnimation(len(objects)-1, animations["ghost idle"])
+            rd.render.setAnimation(len(objects)-1, animations["jelly right"])
             
         elif obj[0] == "ground":
-            ob.NoLogic(getId(), (obj[1], obj[2]), [groups["ground"], groups["all"], groups["player collide"], groups["friction"]])
-            rd.render.setAnimation(len(objects)-1, animations["ground"])
+            if obj[2][0]:
+                ob.NoLogic(getId(), vec(obj[2][1]*48, obj[2][2]*48), [groups["ground"], groups["all"], groups["player collide"], groups["friction"]])
+            else:
+                ob.NoLogic(getId(), vec(obj[2][1], obj[2][2]), [groups["ground"], groups["all"], groups["player collide"], groups["friction"]])
+            if obj[1] == "r":
+                rd.render.setAnimation(len(objects)-1, animations["ground-"+str(ra.randint(1, 6))])
+            elif obj[1] == 1:
+                rd.render.setAnimation(len(objects)-1, animations["ground-1"])
