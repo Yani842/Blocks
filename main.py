@@ -14,7 +14,7 @@ class Main:
         s.running = True
         s.dt = 0
         rd.render.init(s.width, s.height)
-        ld.loadObjectsFromJson("levels/level1.json")
+        ld.loadObjectsFromJson("level1.json")
         rd.render.setFocusedObject(da.currentPlayer)
 
     def inputs(s):

@@ -32,27 +32,28 @@ class Render:
         s.__winW = 0
         s.__winH = 0
 
-    def init(s, w, h):
+    def init(s, w: int, h: int):
         s.__winW = w
         s.__winH = h
         # ["player/"+str(i)+".png" for i in range(1, 16)]
         animations["ghost idle"] = Animation(importImages(["ghost/idle-1.png"], 40, 54), 0, False)
         animations["ghost left"] = Animation(importImages(["ghost/left-1.png"], 40, 54), 0, False)
         animations["ghost right"] = Animation(importImages(["ghost/right-1.png"], 40, 54), 0, False)
-        animations["jelly left"] = Animation(importImages(["jelly/left/"+str(i)+".png" for i in range(1, 16)], 40, 54, True), 0.02, False)
-        animations["jelly right"] = Animation(importImages(["jelly/right/"+str(i)+".png" for i in range(1, 16)], 40, 54, True), 0.02, False)
+        animations["jelly idle"] = Animation(importImages(["jelly/idle/"+str(i)+".png" for i in range(1, 16)], 32, 32, True), 0.02, False)
+        animations["jelly left"] = Animation(importImages(["jelly/left/"+str(i)+".png" for i in range(1, 16)], 32, 32, True), 0.02, False)
+        animations["jelly right"] = Animation(importImages(["jelly/right/"+str(i)+".png" for i in range(1, 16)], 32, 32, True), 0.02, False)
         animations["ground-1"] = Animation(importImages(["ground/grass-1.png"]), 0, False)
         animations["ground-2"] = Animation(importImages(["ground/grass-2.png"]), 0, False)
         animations["ground-3"] = Animation(importImages(["ground/grass-3.png"]), 0, False)
         animations["ground-4"] = Animation(importImages(["ground/grass-4.png"]), 0, False)
         animations["ground-5"] = Animation(importImages(["ground/grass-5.png"]), 0, False)
         animations["ground-6"] = Animation(importImages(["ground/grass+water.png"]), 0, False)
-        print(pg._sdl2.touch.get_device())
+        # print(pg._sdl2.touch.get_device())
 
     def setFocusedObject(s, obj):
         s.__focuseObjct = obj
     
-    def update(s, dt):
+    def update(s, dt: float):
         if s.__focuseObjct:
             s.scroll.x += (s.__focuseObjct.rect.x-s.scroll.x-s.__winW/2+s.__focuseObjct.rect.width/2)/9
             s.scroll.y += (s.__focuseObjct.rect.y-s.scroll.y-s.__winH/2+s.__focuseObjct.rect.height/2)/9
@@ -70,12 +71,12 @@ class Render:
                     else:
                         obj[1] = 0
 
-    def render(s, screen):
+    def render(s, screen: pg.Surface):
         for obj in s.objectStates:
             if obj[1] >= 0:
                 screen.blit(obj[2].images[obj[1]], (groups["all"].sprites()[obj[4]].rect.x-s.scroll.x, groups["all"].sprites()[obj[4]].rect.y-s.scroll.y))
 
-    def setAnimation(s, id, animation):
+    def setAnimation(s, id: int, animation: Animation):
         if len(s.objectStates) <= id:
             groups["all"].sprites()[id].rect = animation.images[0].get_rect()
             groups["all"].sprites()[id].rect.x, groups["all"].sprites()[id].rect.y = groups["all"].sprites()[id].pos
@@ -85,7 +86,7 @@ class Render:
             groups["all"].sprites()[id].rect.x, groups["all"].sprites()[id].rect.y = groups["all"].sprites()[id].pos
             s.objectStates[id] = [0, 0, animation, False, id]
 
-    def setAnimationSameFrame(s, id, animation):
+    def setAnimationSameFrame(s, id: int, animation: Animation):
         groups["all"].sprites()[id].rect = animation.images[0].get_rect()
         groups["all"].sprites()[id].rect.x, groups["all"].sprites()[id].rect.y = groups["all"].sprites()[id].pos
         s.objectStates[id][2] = animation

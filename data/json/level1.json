@@ -1,5 +1,6 @@
 [
     ["player", [false, 0, 0]],
+    ["jelly", [true, 2, -3]],
     ["ground", "r", [true, 0, 0]],
     ["ground", "r", [true, 1, 0]],
     ["ground", "r", [true, 2, 0]],
